@@ -1,0 +1,22 @@
+#!/bin/sh
+
+configdir="${XDG_CONFIG_HOME:-"$HOME/.config/dmenu"}"
+config="$configdir/dmenu_omitlist"
+
+[ ! -e "$configdir" ] && mkdir -p "$configdir"
+
+if [ $# -lt 1 ]; then
+  echo "Missing argument(s).
+  Usage: dmenu_omit item" >&2
+  exit 1
+fi
+
+for item in "$@"
+do
+    echo "$item" >> $config
+done
+
+# using grep to filter out any blanks or empty lines
+# useful if manually edited
+cat -s $config | grep -v -E '^([[:space:]])*$' | sort -u -o $config
+

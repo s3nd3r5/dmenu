@@ -2,12 +2,15 @@
 
 cachedir="${XDG_CACHE_HOME:-"$HOME/.cache"}"
 cache="$cachedir/dmenu_run"
+configdir="${XDG_CONFIG_HOME:-"$HOME/.config/dmenu"}"
+config="$configdir/dmenu_omitlist"
 
 [ ! -e "$cachedir" ] && mkdir -p "$cachedir"
+[ ! -e "$configdir" ] && mkdir -p "$configdir"
 
 IFS=:
 if stest -dqr -n "$cache" $PATH; then
-	stest -flx $PATH | sort -u | tee "$cache"
+	stest -flx $PATH | sort -u | grep -wvF -f $config | tee "$cache"
 else
 	cat "$cache"
 fi

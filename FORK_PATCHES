@@ -5,3 +5,29 @@ This is my local fork with some patches applied and maintained
 
 = Patches
 
+== Filtered Entries
+
+Manually applied a filter to the pipe arguments to omit certain entries.
+Rather than supplying a filtered list, or biasing on recency, this patch omits
+anything that is contained in the supplied configuration file:
+  $XDG_CONFIG_DIR or $HOME/.config/dmenu/dmenu_omitlist
+
+A simple text file that is passed into dmenu_path to filter any items you wish
+to remove. Each path-item name is placed one per line.
+
+The idea being that - dmenu is useful to have /everything/ available in it. But
+some items that you would never call clash with a preinstalled program e.g:
+  fire (a graphics demo) would make it so, after getting installed by mesa,
+filtering for firefox you would need a minimum entry of firef which may break
+what you're muscle memory is use to. Simple push fire into you list and you're
+good :)
+
+It also provide a command line tool to help add filter items from your shell:
+  dmenu_omit fire
+will enter that item and sort your list.
+
+I don't know how portable this is since I wanted to omit the whitespace and that
+required the usage of grep -E (which I know isn't the most portable). Feel free
+to edit dmenu_omit and either supply a cross *nix way, or simply remove the
+whitespace logic from the patch
+
